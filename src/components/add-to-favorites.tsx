@@ -31,7 +31,7 @@ export function AddToFavorites({ movieId, className, ...props }: AddToFavoritesP
 			{...props}
 		>
 			<Heart
-				color={isFavorite ? 'red' : undefined}
+				color={isFavorite ? 'red' : 'currentColor'}
 				fill={isFavorite ? 'red' : 'rgba(0, 0, 0, 0.5)'}
 				className='transition-colors'
 			/>
