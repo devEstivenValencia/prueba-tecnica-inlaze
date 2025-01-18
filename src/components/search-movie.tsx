@@ -24,24 +24,43 @@ import { fetchMoviesByName } from '@/features/movies/fetchers/fetch-movies-by-na
 import { cn } from '@/lib/utils'
 import { Search, Star } from 'lucide-react'
 import Link from 'next/link'
-import { parseAsInteger, parseAsString, useQueryState } from 'nuqs'
-import { useEffect, useState } from 'react'
+import React, { createContext, use, useState } from 'react'
 import useSWR from 'swr'
-import { useDebounce } from 'use-debounce'
+
+interface SearchMovieContext {
+	page: number
+	setPage: (page: number) => void
+	query: string
+	setQuery: (query: string) => void
+	resetSearchParams: () => void
+}
+
+const SearchMovieContext = createContext<SearchMovieContext>({} as SearchMovieContext)
+
+export function SearchMovieProvider({ children }: { children: React.ReactNode }) {
+	const [page, setPage] = useState(1)
+	const [query, setQuery] = useState('')
+
+	function resetSearchParams() {
+		setPage(1)
+		setQuery('')
+	}
+
+	const value = {
+		page,
+		setPage,
+		query,
+		setQuery,
+		resetSearchParams
+	}
+
+	return <SearchMovieContext.Provider value={value}>{children}</SearchMovieContext.Provider>
+}
 
 export function SearchMovie() {
-	const [open, setOpen] = useState(false)
-	const { page, setPage, query, setQuery, resetSearchParams } = useSearchParamsPage()
-
-	const [searchValue] = useDebounce(query, 300)
-	const { data, isLoading } = useSWR('SEARCH_BY_ID_' + searchValue + '_PAGE_' + page, () =>
-		fetchMoviesByName([
-			['query', searchValue],
-			['page', page.toString()]
-		])
-	)
-
-	useEffect(() => console.log(data), [data])
+	const [open, setOpen] = useState(true)
+	const { setPage, setQuery, resetSearchParams } = use(SearchMovieContext)
+	const { data, isLoading } = useSearchMovie()
 
 	function handleSearch(e: React.ChangeEvent) {
 		const target = e.target as HTMLInputElement
@@ -86,7 +105,7 @@ export function SearchMovie() {
 									<Link href={`/movie/${movie.id}`} onClick={redirectToMovie} className='flex flex-row gap-4'>
 										<MovieImage path={movie.poster} width={64} height={64} alt={`Movie ${movie.title}`} />
 										<div className='flex w-4/5 flex-col gap-1'>
-											<p>{movie.title}</p>
+											<p className='w-4/5'>{movie.title}</p>
 											<div className='flex flex-row items-center gap-2'>
 												<Star size={16} />
 												<p>{movie.score}</p>
@@ -97,7 +116,9 @@ export function SearchMovie() {
 									<AddToFavorites movieId={movie.id} className='absolute right-3 top-0' />
 								</li>
 							))}
-							{data?.totalPages && <SearchPagination totalPages={data?.totalPages} />}
+							{data?.totalPages !== undefined && data.totalPages > 1 && (
+								<SearchPagination totalPages={data.totalPages} />
+							)}
 						</ul>
 					)}
 				</div>
@@ -119,7 +140,7 @@ function SearchSkeleton() {
 }
 
 function SearchPagination({ totalPages }: { totalPages: number }) {
-	const { page, setPage } = useSearchParamsPage()
+	const { page, setPage } = use(SearchMovieContext)
 
 	function prevPage() {
 		setPage(page - 1)
@@ -146,20 +167,18 @@ function SearchPagination({ totalPages }: { totalPages: number }) {
 	)
 }
 
-function useSearchParamsPage() {
-	const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1))
-	const [query, setQuery] = useQueryState('query', parseAsString.withDefault(''))
-
-	function resetSearchParams() {
-		setPage(1)
-		setQuery('')
-	}
+function useSearchMovie() {
+	const { page, query } = use(SearchMovieContext)
+	const { data, error, isLoading } = useSWR(['search-movie', page, query], () =>
+		fetchMoviesByName([
+			['query', query],
+			['page', page]
+		])
+	)
 
 	return {
-		page,
-		setPage,
-		query,
-		setQuery,
-		resetSearchParams
+		data,
+		error,
+		isLoading
 	}
 }
