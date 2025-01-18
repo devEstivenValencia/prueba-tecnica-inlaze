@@ -58,7 +58,7 @@ export function SearchMovieProvider({ children }: { children: React.ReactNode })
 }
 
 export function SearchMovie() {
-	const [open, setOpen] = useState(true)
+	const [open, setOpen] = useState(false)
 	const { setPage, setQuery, resetSearchParams } = use(SearchMovieContext)
 	const { data, isLoading } = useSearchMovie()
 
@@ -93,7 +93,7 @@ export function SearchMovie() {
 						placeholder='Buscar por nombre de pelicula'
 						onChange={handleSearch}
 						autoFocus
-						className='rounded-full bg-white px-4 py-6 text-black placeholder:text-slate-700'
+						className='mx-auto max-w-2xl rounded-full bg-white px-4 py-6 text-black placeholder:text-slate-700'
 					/>
 					{isLoading && Array.from({ length: 8 }).map((_, i) => <SearchSkeleton key={i} />)}
 					{!isLoading && !data?.results?.length ? (
