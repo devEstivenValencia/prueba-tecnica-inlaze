@@ -1,13 +1,13 @@
 'use client'
 
-import { useFavorites } from './use-favorites'
+import { useFetchFavorites } from './use-fetch-favorites'
 import { MovieImage } from '@/components/movie-image'
 import { Star } from 'lucide-react'
 import Link from 'next/link'
 import { Suspense } from 'react'
 
 export function FavoritesGrid() {
-	const { favorites } = useFavorites()
+	const { favorites } = useFetchFavorites()
 
 	return (
 		<ul className='grid grid-cols-2 gap-4'>

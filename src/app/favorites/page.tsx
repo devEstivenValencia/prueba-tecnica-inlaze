@@ -1,13 +1,13 @@
 'use client'
 
-import { useFavorites } from './assets/use-favorites'
+import { useFetchFavorites } from './assets/use-fetch-favorites'
 import { MovieImage } from '@/components/movie-image'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Star } from 'lucide-react'
 import Link from 'next/link'
 
 export default function FavoritesPage() {
-	const { favorites, isLoading } = useFavorites()
+	const { favorites, isLoading } = useFetchFavorites()
 	return (
 		<main className='flex flex-col gap-4'>
 			{isLoading ? (
