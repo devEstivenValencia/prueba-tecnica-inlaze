@@ -11,9 +11,11 @@ export interface Movie {
 	country: string
 	revenue: number
 	budget: number
-	trailers: Array<{
-		name: string
-		url: string
-		key: string
-	}> | null
+	trailers: Array<Trailer> | null
+}
+
+export interface Trailer {
+	name: string
+	url: string | null
+	key: string
 }
