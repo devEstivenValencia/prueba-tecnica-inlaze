@@ -18,10 +18,10 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='es'>
-			<body className={clsx(quickSand.variable, splineSans.variable, 'font-sans text-white antialiased')}>
+			<body className={clsx(quickSand.variable, splineSans.variable, 'min-h-screen font-sans text-white antialiased')}>
+				<Bg />
 				<NuqsAdapter>
-					<div className='px-4'>
-						<Bg />
+					<div className='mx-auto h-full min-h-screen max-w-5xl px-4'>
 						<Header />
 						{children}
 					</div>
