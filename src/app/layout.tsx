@@ -1,13 +1,7 @@
+import { quickSand, splineSans } from './fonts/fonts'
 import './globals.css'
 import clsx from 'clsx'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-
-const inter = Inter({
-	subsets: ['latin'],
-	display: 'swap',
-	variable: '--font-inter'
-})
 
 export const metadata: Metadata = {
 	title: 'Create Next App',
@@ -21,7 +15,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='es'>
-			<body className={clsx(inter.variable, 'font-sans antialiased')}>{children}</body>
+			<body className={clsx(quickSand.variable, splineSans.variable, 'font-sans text-white antialiased')}>
+				{children}
+			</body>
 		</html>
 	)
 }
