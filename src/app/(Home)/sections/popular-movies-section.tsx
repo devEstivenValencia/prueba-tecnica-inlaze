@@ -27,13 +27,13 @@ export async function PopularMoviesSection({ page, totalPages }: PaginationProps
 	const { results } = res
 
 	return (
-		<section id='popular-movies' className='flex flex-col gap-8'>
+		<section id='popular-movies' className='flex w-full flex-col gap-8'>
 			<div className='grid grid-cols-[auto,auto,1fr] items-center gap-1'>
 				<FlameIcon />
 				<h2 className='w-full font-heading text-2xl font-semibold'>Popular movies</h2>
 				<div className='ml-4 h-1 w-auto bg-white' />
 			</div>
-			<ul className='grid grid-cols-2 gap-4'>
+			<ul className='grid w-full grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4'>
 				{results.map(movie => (
 					<li key={movie.id} className='relative'>
 						<AddToFavorites movieId={movie.id} className='absolute right-2 top-2 z-50' />
