@@ -9,7 +9,7 @@ import Link from 'next/link'
 export default function FavoritesPage() {
 	const { favorites, isLoading } = useFetchFavorites()
 	return (
-		<main className='flex flex-col gap-4'>
+		<main className='flex h-full min-h-[inherit] flex-col gap-4'>
 			{isLoading ? (
 				<Grid>
 					{Array.from({ length: 12 }).map((_, i) => (
@@ -18,7 +18,7 @@ export default function FavoritesPage() {
 						</li>
 					))}
 				</Grid>
-			) : (
+			) : favorites?.length ? (
 				<>
 					<div className='grid grid-cols-[auto,1fr,auto] items-center gap-4'>
 						<h1>Mis favoritos</h1>
@@ -41,6 +41,8 @@ export default function FavoritesPage() {
 						))}
 					</Grid>
 				</>
+			) : (
+				<h1 className='m-auto text-2xl'>No tienes favoritos</h1>
 			)}
 		</main>
 	)
