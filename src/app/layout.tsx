@@ -1,7 +1,10 @@
 import { quickSand, splineSans } from './fonts/fonts'
 import './globals.css'
+import { Bg } from '@/components/bg'
+import { Header } from '@/components/header'
 import clsx from 'clsx'
 import type { Metadata } from 'next'
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 export const metadata: Metadata = {
 	title: 'Create Next App',
@@ -16,7 +19,13 @@ export default function RootLayout({
 	return (
 		<html lang='es'>
 			<body className={clsx(quickSand.variable, splineSans.variable, 'font-sans text-white antialiased')}>
-				{children}
+				<NuqsAdapter>
+					<div className='px-4'>
+						<Bg />
+						<Header />
+						{children}
+					</div>
+				</NuqsAdapter>
 			</body>
 		</html>
 	)
