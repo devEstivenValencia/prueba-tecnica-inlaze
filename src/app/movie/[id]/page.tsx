@@ -55,7 +55,7 @@ export default async function MovieDetailsPage({ params }: { params: Promise<{ i
 					</li>
 				))}
 			</ul>
-			<div className='flex w-full flex-col gap-4'>
+			<div className='grid w-full grid-cols-1 gap-4 md:grid-cols-2'>
 				{data?.trailers?.map(trailer => <YouTubeEmbed videoid={trailer.key} key={trailer.key} />)}
 			</div>
 		</main>
