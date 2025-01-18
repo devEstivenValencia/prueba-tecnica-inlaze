@@ -1,6 +1,6 @@
 'use client'
 
-import { favoritiesRepository } from '@/features/favorities/favorities.repository'
+import { useFavorites } from '@/hooks/use-favorites'
 import clsx from 'clsx'
 import { Heart } from 'lucide-react'
 import { useMemo, useState } from 'react'
@@ -10,15 +10,16 @@ interface AddToFavoritesProps extends React.HTMLAttributes<HTMLButtonElement> {
 }
 
 export function AddToFavorites({ movieId, className, ...props }: AddToFavoritesProps) {
-	const memoizedIsFavorite = useMemo(() => favoritiesRepository().isFavorite(movieId), [movieId])
+	const { isFavorite: verifyIsFavorite, remove, save } = useFavorites()
+	const memoizedIsFavorite = useMemo(() => verifyIsFavorite(movieId), [movieId, verifyIsFavorite])
 	const [isFavorite, setIsFavorite] = useState<boolean>(memoizedIsFavorite)
 
 	function toggleFavorite() {
 		if (isFavorite) {
-			favoritiesRepository().remove(movieId)
+			remove(movieId)
 			setIsFavorite(false)
 		} else {
-			favoritiesRepository().save(movieId)
+			save(movieId)
 			setIsFavorite(true)
 		}
 	}
